@@ -1,0 +1,85 @@
+/* Set a vibrant background with animated gradient */
+body {
+  background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffafbd, #f6d365, #fda085);
+  background-size: 150% 150%;
+  animation: gradientAnimation 8s ease infinite;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Gradient background animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Style buttons with funky, bouncing animations */
+button {
+  background: #ff6b6b;
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 10px;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1);
+  background: #f57d7d;
+}
+
+/* Bounce animation for button */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Input fields with rounded corners and shadow */
+input[type="text"], input[type="password"] {
+  padding: 12px 20px;
+  margin: 10px;
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  font-size: 1em;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Container with a rotating border animation */
+.container {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  margin: 5% auto;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  border: 5px solid;
+  border-image: linear-gradient(to right, #ff6b6b, #ffc3a0) 1;
+  animation: rotateBorder 5s linear infinite;
+}
+
+/* Rotating border animation */
+@keyframes rotateBorder {
+  0% { border-image-source: linear-gradient(to right, #ff6b6b, #ffc3a0); }
+  100% { border-image-source: linear-gradient(to right, #ffc3a0, #ff6b6b); }
+}
+
+/* Updated heading style without animation */
+h1, h2 {
+  font-weight: bold;
+  color: #ff6b6b;
+  /* Removed the wave animation */
+}
+
+/* Animate form elements on hover */
+form input:hover, form button:hover {
+  transform: scale(1.05);
+}
