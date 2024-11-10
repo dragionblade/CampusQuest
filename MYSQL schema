@@ -1,0 +1,47 @@
+CREATE DATABASE CampusQuest;
+
+USE CampusQuest;
+
+-- Users table to store player and admin information
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    college_id VARCHAR(20) NOT NULL UNIQUE,
+    role ENUM('player', 'admin') NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    points INT DEFAULT 0
+);
+
+-- Quests table to store quest details
+CREATE TABLE Quests (
+    quest_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description TEXT,
+    base_points INT NOT NULL,
+    difficulty_level ENUM('easy', 'medium', 'hard') NOT NULL,
+    created_by INT,
+    FOREIGN KEY (created_by) REFERENCES Users(user_id)
+);
+
+-- Quest_Completion table to track quest completions by players
+CREATE TABLE Quest_Completion (
+    completion_id INT AUTO_INCREMENT PRIMARY KEY,
+    quest_id INT,
+    user_id INT,
+    points_awarded INT,
+    completion_status ENUM('pending', 'verified', 'rejected') DEFAULT 'pending',
+    submission_date DATE,
+    verification_date DATE,
+    FOREIGN KEY (quest_id) REFERENCES Quests(quest_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+-- Leaderboard table to track yearly top players
+CREATE TABLE Leaderboard (
+    leaderboard_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    total_points INT,
+    year YEAR,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
