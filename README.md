@@ -28,24 +28,25 @@ CampusQuest is a gamified web-based platform designed to enhance student engagem
 - **Backend**: Java (Servlets and JSP), Apache Tomcat
 - **Database**: MySQL
 
-## Project Structure
+## Getting Started
 
-```plaintext
-CampusQuest/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── DatabaseConnection.java
-│   │   │   ├── LoginServlet.java
-│   │   └── webapp/
-│   │       ├── WEB-INF/
-│   │       │   └── web.xml
-│   │       ├── login.jsp
-│   │       ├── playerDashboard.jsp
-│   │       ├── quests.jsp
-│   │       ├── quiz.jsp
-│   │       ├── leaderboard.jsp
-│   │       └── history.jsp
-└── lib/
-    └── mysql-connector-java-x.x.xx.jar
+### Prerequisites
+
+- **Java JDK 8 or newer**
+- **Apache Tomcat** (8.5 or newer)
+- **MySQL** (for database)
+- **Visual Studio Code** with the following extensions:
+  - [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
+  - [Tomcat for Java](https://marketplace.visualstudio.com/items?itemName=adashen.vscode-tomcat)
+  - [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools) (optional)
+
+
+# Team Members
+
+- **Tapsu Shanta Mittal** - 23SCSE1010266
+- **Piyush Patel** - 23SCSE1011185
+- **Aditya Chauhan** - 23SCSE1010014
+- **Vijay Pratap Singh** - 23SCSE1012206
+
+
 
