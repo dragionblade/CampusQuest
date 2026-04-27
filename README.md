@@ -41,12 +41,6 @@ CampusQuest is a gamified web-based platform designed to enhance student engagem
   - [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools) (optional)
 
 
-# Team Members
-
-- **Tapsu Shanta Mittal** - 23SCSE1010266
-- **Piyush Patel** - 23SCSE1011185
-- **Aditya Chauhan** - 23SCSE1010014
-- **Vijay Pratap Singh** - 23SCSE1012206
 
 
 
