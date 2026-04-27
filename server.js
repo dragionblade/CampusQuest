@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const mysql = require('mysql2');
@@ -6,26 +7,28 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret: 'campusquest-secret-key',
+    secret: process.env.SESSION_SECRET || 'campusquest-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 30 * 60 * 1000 }
 }));
 
 // MySQL Connection (without database first)
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '43pr16pi',
+const dbConfig = {
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '43pr16pi',
     multipleStatements: true
-});
+};
+
+const db = mysql.createConnection(dbConfig);
 
 // Auto-initialize database
 function initDatabase() {
@@ -38,10 +41,15 @@ function initDatabase() {
         console.log('✅ Connected to MySQL');
 
         // Create database if not exists
-        db.query('CREATE DATABASE IF NOT EXISTS campusquest', (err) => {
-            if (err) throw err;
-            db.query('USE campusquest', (err) => {
-                if (err) throw err;
+        const dbName = process.env.DB_NAME || 'campusquest';
+        
+        db.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``, (err) => {
+            // Ignore error if it's a permission issue (e.g. on managed DB)
+            db.query(`USE \`${dbName}\``, (err) => {
+                if (err) {
+                    console.log(`❌ Failed to use database ${dbName}:`, err.message);
+                    process.exit(1);
+                }
 
                 // Create tables
                 const createTables = `
