@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - CampusQuest Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Leaderboard</h1>
+            <div class="user-info">
+                <span id="userName">Admin</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        
+        <nav>
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/create-quest">Create Quest</a>
+            <a href="/admin/submissions">Review Submissions</a>
+            <a href="/admin/leaderboard" class="active">Leaderboard</a>
+        </nav>
+        
+        <main>
+            <h2>Student Performance Overview</h2>
+            <p style="color:#888;margin-bottom:20px">Monitor student engagement and identify top performers</p>
+            <div id="leaderboardContainer">
+                <div class="loading">Loading</div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>loadUserInfo(); loadLeaderboard('leaderboardContainer');</script>
+</body>
+</html>

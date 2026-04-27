@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusQuest - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-form">
+            <div class="login-icon">🎮</div>
+            <h1>CampusQuest</h1>
+            <p class="subtitle">Gamified Campus Engagement Platform</p>
+            
+            <div id="errorMsg" class="error" style="display:none"></div>
+            <div id="successMsg" class="success" style="display:none"></div>
+            
+            <form id="loginForm" action="/login" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Don't have an account? <a href="/register">Register here</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error')) {
+            document.getElementById('errorMsg').textContent = params.get('error');
+            document.getElementById('errorMsg').style.display = 'block';
+        }
+        if (params.get('success')) {
+            document.getElementById('successMsg').textContent = params.get('success');
+            document.getElementById('successMsg').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

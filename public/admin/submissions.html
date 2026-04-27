@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Submissions - CampusQuest</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Review Submissions</h1>
+            <div class="user-info">
+                <span id="userName">Admin</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        
+        <nav>
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/create-quest">Create Quest</a>
+            <a href="/admin/submissions" class="active">Review Submissions</a>
+            <a href="/admin/leaderboard">Leaderboard</a>
+        </nav>
+        
+        <main>
+            <h2>Pending Quest Submissions</h2>
+            <p style="color:#888;margin-bottom:20px">Review and approve student quest completions</p>
+            <div id="submissionsContainer">
+                <div class="loading">Loading</div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>loadUserInfo(); loadPendingSubmissions('submissionsContainer');</script>
+</body>
+</html>

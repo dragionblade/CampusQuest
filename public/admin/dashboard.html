@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CampusQuest</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Admin Dashboard</h1>
+            <div class="user-info">
+                <span id="userName">Admin</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        
+        <nav>
+            <a href="/admin/dashboard" class="active">Dashboard</a>
+            <a href="/admin/create-quest">Create Quest</a>
+            <a href="/admin/submissions">Review Submissions</a>
+            <a href="/admin/leaderboard">Leaderboard</a>
+        </nav>
+        
+        <main>
+            <h2>Quick Stats</h2>
+            <div id="statsGrid" class="stats-grid">
+                <div class="loading">Loading</div>
+            </div>
+            
+            <h2 style="margin-top:30px">Recent Activity</h2>
+            <div id="recentActivity">
+                <div class="quest-card">
+                    <h3>📋 Manage Campus Quests</h3>
+                    <p>Create new quests and review student submissions to keep the campus engaged.</p>
+                    <div class="quest-footer">
+                        <a href="/admin/create-quest" class="btn btn-primary">Create Quest</a>
+                        <a href="/admin/submissions" class="btn btn-success">Review Submissions</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>loadUserInfo(); loadAdminStats(); </script>
+</body>
+</html>

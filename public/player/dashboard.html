@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Dashboard - CampusQuest</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Player Dashboard</h1>
+            <div class="user-info">
+                <span id="userName">Player</span>
+                <span class="points-badge" id="userPoints">0 pts</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        
+        <nav>
+            <a href="/player/dashboard" class="active">Dashboard</a>
+            <a href="/player/quests">Available Quests</a>
+            <a href="/player/my-submissions">My Submissions</a>
+            <a href="/player/leaderboard">Leaderboard</a>
+        </nav>
+        
+        <main>
+            <div class="welcome-section">
+                <h2>Welcome to CampusQuest!</h2>
+                <p>Complete quests to earn points and climb the leaderboard.</p>
+            </div>
+            
+            <div id="statsGrid" class="stats-grid">
+                <div class="loading">Loading</div>
+            </div>
+            
+            <h2 style="margin-top:30px">Available Quests</h2>
+            <div id="questsContainer">
+                <div class="loading">Loading</div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        (async () => {
+            const user = await loadUserInfo();
+            if (user) {
+                const statsEl = document.getElementById('statsGrid');
+                statsEl.innerHTML = `
+                    <div class="stat-card"><h3>Your Points</h3><p>${user.points}</p></div>
+                    <div class="stat-card"><h3>Quests Available</h3><p id="questCount">—</p></div>
+                    <div class="stat-card"><h3>Your Rank</h3><p id="userRank">—</p></div>
+                `;
+                
+                const quests = await API.get('/api/quests');
+                if (quests && !quests.error) {
+                    document.getElementById('questCount').textContent = quests.length;
+                }
+                
+                const lb = await API.get('/api/leaderboard');
+                if (lb && !lb.error) {
+                    const rank = lb.findIndex(e => e.username === user.username) + 1;
+                    document.getElementById('userRank').textContent = rank > 0 ? '#' + rank : 'N/A';
+                }
+            }
+            loadQuests('questsContainer');
+        })();
+    </script>
+</body>
+</html>

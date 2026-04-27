@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Submissions - CampusQuest</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 My Submissions</h1>
+            <div class="user-info">
+                <span id="userName">Player</span>
+                <span class="points-badge" id="userPoints">0 pts</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        
+        <nav>
+            <a href="/player/dashboard">Dashboard</a>
+            <a href="/player/quests">Available Quests</a>
+            <a href="/player/my-submissions" class="active">My Submissions</a>
+            <a href="/player/leaderboard">Leaderboard</a>
+        </nav>
+        
+        <main>
+            <h2>Your Quest Submissions</h2>
+            <p style="color:#888;margin-bottom:20px">Track the status of your completed quests</p>
+            <div id="submissionsContainer">
+                <div class="loading">Loading</div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>loadUserInfo(); loadMySubmissions('submissionsContainer');</script>
+</body>
+</html>

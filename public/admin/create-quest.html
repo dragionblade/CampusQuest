@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quest - CampusQuest</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Create Quest</h1>
+            <div class="user-info">
+                <span id="userName">Admin</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        
+        <nav>
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/create-quest" class="active">Create Quest</a>
+            <a href="/admin/submissions">Review Submissions</a>
+            <a href="/admin/leaderboard">Leaderboard</a>
+        </nav>
+        
+        <main>
+            <div class="quest-form">
+                <h2>Create a New Quest</h2>
+                <div id="questMsg" style="display:none"></div>
+                
+                <div class="form-group">
+                    <label for="questTitle">Quest Title</label>
+                    <input type="text" id="questTitle" placeholder="e.g., Attend Workshop, Join Club">
+                </div>
+                
+                <div class="form-group">
+                    <label for="questDesc">Description</label>
+                    <textarea id="questDesc" rows="4" placeholder="Describe what students need to do to complete this quest..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="questPoints">Points Awarded</label>
+                    <input type="number" id="questPoints" min="10" max="100" placeholder="Enter points (10-100)">
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="createQuest()">Create Quest</button>
+                    <a href="/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+            
+            <div class="quest-tips">
+                <h3>Quest Creation Tips</h3>
+                <ul>
+                    <li>Make titles clear and engaging</li>
+                    <li>Provide specific, measurable requirements</li>
+                    <li>Assign appropriate points based on difficulty</li>
+                    <li>Consider the time and effort required</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>loadUserInfo();</script>
+</body>
+</html>
