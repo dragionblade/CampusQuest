@@ -8,6 +8,9 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
+const DB_CONNECT_RETRIES = Number(process.env.DB_CONNECT_RETRIES || 30);
+const DB_CONNECT_RETRY_DELAY_MS = Number(process.env.DB_CONNECT_RETRY_DELAY_MS || 2000);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -28,15 +31,33 @@ const dbConfig = {
     multipleStatements: true
 };
 
-const db = mysql.createConnection(dbConfig);
+function createDbConnection() {
+    const connection = mysql.createConnection(dbConfig);
+    connection.on('error', (err) => {
+        if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+            console.log('MySQL connection error:', err.message);
+        }
+    });
+    return connection;
+}
+
+let db = createDbConnection();
 
 // Auto-initialize database
-function initDatabase() {
+function initDatabase(attempt = 1) {
     db.connect((err) => {
         if (err) {
-            console.log('❌ MySQL connection failed. Make sure MySQL is running and credentials are correct.');
-            console.log('   Error:', err.message);
-            process.exit(1);
+            if (attempt >= DB_CONNECT_RETRIES) {
+                console.log('❌ MySQL connection failed. Make sure MySQL is running and credentials are correct.');
+                console.log('   Error:', err.message);
+                process.exit(1);
+            }
+
+            console.log(`⏳ Waiting for MySQL (${attempt}/${DB_CONNECT_RETRIES}): ${err.message}`);
+            db.destroy();
+            db = createDbConnection();
+            setTimeout(() => initDatabase(attempt + 1), DB_CONNECT_RETRY_DELAY_MS);
+            return;
         }
         console.log('✅ Connected to MySQL');
 
@@ -90,13 +111,24 @@ function initDatabase() {
                         ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdLmPnSOe', 'admin@campusquest.com', 'Administrator', 'admin'),
                         ('player1', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdLmPnSOe', 'player1@campusquest.com', 'John Doe', 'player');
 
-                    INSERT IGNORE INTO quests (title, description, points, created_by) VALUES
-                        ('Attend Workshop', 'Attend any campus workshop and provide proof of attendance', 50, 1),
-                        ('Join Club', 'Join any student club and show membership confirmation', 30, 1),
-                        ('Volunteer Event', 'Participate in a campus volunteer event', 40, 1),
-                        ('Library Research', 'Complete a research session at the campus library', 25, 1),
-                        ('Sports Day', 'Participate in any campus sports event', 35, 1),
-                        ('Hackathon', 'Participate in a campus hackathon or coding competition', 60, 1);
+                    INSERT INTO quests (title, description, points, created_by)
+                        SELECT 'Attend Workshop', 'Attend any campus workshop and provide proof of attendance', 50, 1
+                        WHERE NOT EXISTS (SELECT 1 FROM quests WHERE title = 'Attend Workshop');
+                    INSERT INTO quests (title, description, points, created_by)
+                        SELECT 'Join Club', 'Join any student club and show membership confirmation', 30, 1
+                        WHERE NOT EXISTS (SELECT 1 FROM quests WHERE title = 'Join Club');
+                    INSERT INTO quests (title, description, points, created_by)
+                        SELECT 'Volunteer Event', 'Participate in a campus volunteer event', 40, 1
+                        WHERE NOT EXISTS (SELECT 1 FROM quests WHERE title = 'Volunteer Event');
+                    INSERT INTO quests (title, description, points, created_by)
+                        SELECT 'Library Research', 'Complete a research session at the campus library', 25, 1
+                        WHERE NOT EXISTS (SELECT 1 FROM quests WHERE title = 'Library Research');
+                    INSERT INTO quests (title, description, points, created_by)
+                        SELECT 'Sports Day', 'Participate in any campus sports event', 35, 1
+                        WHERE NOT EXISTS (SELECT 1 FROM quests WHERE title = 'Sports Day');
+                    INSERT INTO quests (title, description, points, created_by)
+                        SELECT 'Hackathon', 'Participate in a campus hackathon or coding competition', 60, 1
+                        WHERE NOT EXISTS (SELECT 1 FROM quests WHERE title = 'Hackathon');
                 `;
 
                 db.query(createTables, (err) => {
@@ -117,6 +149,8 @@ function initDatabase() {
                             console.log('✅ Passwords secured');
                         }
                     });
+
+                    startServer();
                 });
             });
         });
@@ -406,14 +440,17 @@ app.get('/api/admin/stats', requireAdmin, (req, res) => {
 
 // Start server
 initDatabase();
-app.listen(PORT, () => {
-    console.log('');
-    console.log('🎮 CampusQuest is running!');
-    console.log('========================');
-    console.log(`🌐 Open: http://localhost:${PORT}`);
-    console.log('');
-    console.log('👤 Login Credentials:');
-    console.log('   Admin:  admin / admin123');
-    console.log('   Player: player1 / player123');
-    console.log('');
-});
+
+function startServer() {
+    app.listen(PORT, HOST, () => {
+        console.log('');
+        console.log('🎮 CampusQuest is running!');
+        console.log('========================');
+        console.log(`🌐 Open: http://${HOST}:${PORT}`);
+        console.log('');
+        console.log('👤 Login Credentials:');
+        console.log('   Admin:  admin / admin123');
+        console.log('   Player: player1 / player123');
+        console.log('');
+    });
+}
